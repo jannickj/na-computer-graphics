@@ -19,3 +19,14 @@
 *.exe
 *.out
 *.app
+
+# Logs
+*.tlog
+*.log
+
+# Misc
+*.suo
+bin/
+Debug/
+Release/
+*.user
