@@ -23,20 +23,20 @@ struct Vertex {
 	vec2 position;
 };
 
-const int NUMBER_OF_VERTICES = 5;
+const int NUMBER_OF_VERTICES = 3;
 Vertex vertexData[NUMBER_OF_VERTICES] = {
 	{ vec2(0.0, 0.0 ) },
-	{ vec2(0.0, 0.5 ) },
-	{ vec2( 0.5, 0.5 ) },
-	{ vec2( 0.5,  0.5 ) },
-	{ vec2( -0.5, 0.5 ) }
+	{ vec2(0.5, 0.0 ) },
+	{ vec2( 0.5, 0.1 ) }
 };
 
 // forward declaration
 void loadShader();
+void drawCircle_JA();
 void display();
 void loadBufferData();
 void reshape(int W, int H);
+
 
 void display() {	
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -45,17 +45,35 @@ void display() {
 	glUseProgram(shaderProgram);
 
 	mat4 projection = Ortho2D(-1.0f, 1.0f, -1.0f, 1.0f);
-	glUniformMatrix4fv(projectionUniform, 1, GL_TRUE, projection);
+	glUniformMatrix4fv(projectionUniform, 1, GL_TRUE, projection);	
 	
-	mat4 modelView;
-    glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 
-	glBindVertexArray(vertexArrayObject);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, NUMBER_OF_VERTICES);
-	
+	drawCircle_JA();
+		
 	glutSwapBuffers();
 
 	Angel::CheckError();
+}
+
+void drawCircle_JA()
+{
+	int resolution = 360/atanf(0.1/0.5);
+	int i;
+	float triangleSize = 1;
+	float rotateAngle = atanf(0.1/0.5);
+	mat4 modelView;   
+	glBindVertexArray(vertexArrayObject);
+
+	printf("calc'ed resolution is: %d.\n", resolution);
+	
+
+	for (i = 0; i < resolution; i++)
+	{		
+		modelView = RotateZ(rotateAngle*i)*Scale(1,triangleSize,1);
+		glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, NUMBER_OF_VERTICES);
+	}
+	
 }
 
 void reshape(int W, int H) {

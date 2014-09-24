@@ -51,9 +51,35 @@ void display() {
 	glBindVertexArray(vertexArrayObject);
 
 	// todo transform modelView and draw triangles
+	//modelView = Scale(10.0f,10.0f,0)*RotateZ(135.0f)*Translate(0,0,0);
+	mat4 baseSmallMV = Scale(10.0f,10.0f,0)*RotateX(180.0f);
+	mat4 baseLargeMV = Scale(1.0f,20.0f,0)*Translate(0.0f,-0.0f,0.0f);//*RotateZ(45.0f)*Scale(0.0f,20.0f,0)
+
+	// first inner
+	modelView = baseSmallMV;
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
+
+	// second inner
+	modelView = baseSmallMV*RotateZ(90.0f);
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
+
+	// third inner
+	modelView = baseSmallMV*RotateZ(180.0f);
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
+
+	// fourth inner
+	modelView = baseSmallMV*RotateZ(270.0f);
 	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
 	
+	// First outer
+	modelView = baseLargeMV;
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
+
 	glutSwapBuffers();
 
 	Angel::CheckError();

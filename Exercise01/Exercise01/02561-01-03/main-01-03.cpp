@@ -59,6 +59,18 @@ void display() {
 	//glDrawElements takes the Vertex Array Buffer and uses the given indices within the VAB to specify which points to use, instead of using them from 0-end (as glDrawArrays does)
 	
 	//use glDrawElements(using GL_TRIANGLES and some other indices) to draw the figure in lower left corner
+
+	// lower left
+	modelView = Translate(-7,-7,0);
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	GLuint indicesll[6] = {3,4,2,0,1,5};
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, indicesll);
+
+	// lower right
+	modelView = Translate(+7,-7,0);
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	GLuint indiceslr[9] = {3,4,5,0,1,5,3,2,1};
+	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, indiceslr);
 	
 
 	glutSwapBuffers();
