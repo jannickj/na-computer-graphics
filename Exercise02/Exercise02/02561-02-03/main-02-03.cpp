@@ -131,10 +131,15 @@ void display() {
 	
     glUseProgram(shaderProgram);
 
-	mat4 projection = Ortho(-6., 6., -6., 6., -6., 10.);
+	mat4 projection = Perspective(45., 1., 1., 30.); //front perspective
 	glUniformMatrix4fv(projectionUniform, 1, GL_TRUE, projection);
+	
 
-	mat4 modelView;
+	vec3 eye(20,5,5);
+	//vec3 at(0.0f,5.0f,5.0f); //part 3a
+	vec3 at(0.0f,5.0f,-5.0f); //part 3b
+	vec3 up(0,1,0);
+	mat4 modelView = LookAt(eye, at, up);
 
 	vec4 white(1.0, 1.0, 1.0, 1.0);
 	glUniform4fv(colorUniform, 1, white);

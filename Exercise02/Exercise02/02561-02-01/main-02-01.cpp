@@ -23,7 +23,7 @@ GLuint teapotVAO,
 int numVertices;
 
 struct Vertex {
-    vec4 position;
+    vec4 position;//this only handles x,y,z position. In exercise 1, it handled x,y position and another vertex to handle color
 };
 
 void loadShader(){
@@ -48,9 +48,11 @@ void display() {
 	
     glUseProgram(shaderProgram);
 
+	//viewplane transformation
 	mat4 projection = Ortho(-5.0f, 5.0f, -5.0f, 5.0f, 30.0f, -30.0f);
 	glUniformMatrix4fv(projectionUniform, 1, GL_TRUE, projection);
 
+	//We defined the camera by giving it's location, at what it is looking at, and what direction is up for the camera
 	vec3 eye(0,3,6);
 	vec3 at(0,0,0);
 	vec3 up(0,1,0);

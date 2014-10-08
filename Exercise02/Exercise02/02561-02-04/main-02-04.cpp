@@ -133,7 +133,10 @@ void display() {
 	mat4 projection = Ortho(-6., 6., -6., 6., -6., 10.);
 	glUniformMatrix4fv(projectionUniform, 1, GL_TRUE, projection);
 
-	mat4 modelView;
+	vec3 eye(1,1,1);
+	vec3 at(0.0f,0.0f,0.0f);
+	vec3 up(0,0,1);
+	mat4 modelView = LookAt(eye, at, up);
 
 	vec4 white(1.0, 1.0, 1.0, 1.0);
 	glUniform4fv(colorUniform, 1, white);

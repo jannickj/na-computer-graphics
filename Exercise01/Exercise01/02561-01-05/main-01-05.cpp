@@ -53,7 +53,7 @@ void display() {
 	// todo transform modelView and draw triangles
 	//modelView = Scale(10.0f,10.0f,0)*RotateZ(135.0f)*Translate(0,0,0);
 	mat4 baseSmallMV = Scale(10.0f,10.0f,0)*RotateX(180.0f);
-	mat4 baseLargeMV = Scale(1.0f,20.0f,0)*Translate(0.0f,-0.0f,0.0f);//*RotateZ(45.0f)*Scale(0.0f,20.0f,0)
+	mat4 baseLargeMV = Translate(10.0f,10.0f,0.0f)*Scale(10.0f*sqrt(2.0f),10.0f*sqrt(2.0f),0.0f)*RotateX(180.0f)*RotateZ(45.0f);
 
 	// first inner
 	modelView = baseSmallMV;
@@ -77,6 +77,21 @@ void display() {
 	
 	// First outer
 	modelView = baseLargeMV;
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
+
+	// second outer
+	modelView = baseLargeMV*RotateX(180.0f)*RotateZ(180.0f);
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
+
+	// Third outer
+	modelView = Translate(-10.0f,-10.0f,0.0f)*Scale(10.0f*sqrt(2.0f),10.0f*sqrt(2.0f),0.0f)*RotateZ(-45.0f)*RotateY(180.0f);
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
+
+	// Fourth outer
+	modelView = Translate(-10.0f,-10.0f,0.0f)*Scale(10.0f*sqrt(2.0f),10.0f*sqrt(2.0f),0.0f)*RotateZ(-45.0f);
 	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 	glDrawArrays(GL_TRIANGLES, 0, NUMBER_OF_VERTICES);
 
