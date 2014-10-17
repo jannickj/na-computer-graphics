@@ -56,7 +56,13 @@ void display() {
 	vec3 eye(0,3,6);
 	vec3 at(0,0,0);
 	vec3 up(0,1,0);
-	mat4 modelView = LookAt(eye, at, up);
+
+	//part 1
+	//mat4 modelView = LookAt(eye, at, up);
+
+	//part 6:
+	mat4 modelView = RotateX(atan(3.0/6.0)/DegreesToRadians)*Translate(0,-3,-6);
+
 	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 
 	glBindVertexArray(teapotVAO);

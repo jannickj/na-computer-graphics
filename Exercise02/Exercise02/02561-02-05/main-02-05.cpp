@@ -38,7 +38,8 @@ void key1(){
 
 void key2(){
     // todo replace with series of matrix transformations (using Translate, Rotate, Scale functions)
-    view = LookAt(vec4(-.5, 1, 6,1), vec4(-2,1,0,1), vec4(0,1,0,0));
+    //view = LookAt(vec4(-.5, 1, 6,1), vec4(-2,1,0,1), vec4(0,1,0,0));
+	view = RotateY(-atan(1.5/6)/DegreesToRadians)*Translate(.5, -1, -6);
 }
 
 void key3(){
@@ -47,7 +48,8 @@ void key3(){
 
 void key4(){
     // todo replace with lookAt function
-    view = RotateY(-120) * Translate(-4, -1, -1);
+    //view = RotateY(-120) * Translate(-4, -1, -1);
+	view = LookAt(vec4(4, 1, 1,1), vec4(-1, 1, tan(30.0*DegreesToRadians),1)+vec4(4, 0, 1,0), vec4(0,1,0,0));
 }
 
 void key5(){
@@ -60,7 +62,12 @@ void key6(){
     //      GLfloat m01, GLfloat m11, GLfloat m21, GLfloat m31,
     //      GLfloat m02, GLfloat m12, GLfloat m22, GLfloat m32,
     //      GLfloat m03, GLfloat m13, GLfloat m23, GLfloat m33 )
-    view = LookAt(vec4(-1, 1, 9,1), vec4(-1,1,0,1), vec4(0,1,0,0));
+    //view = LookAt(vec4(-1, 1, 9,1), vec4(-1,1,0,1), vec4(0,1,0,0));
+	//view = Translate(1,-1,-9);
+	view = mat4(1,0,0,0,
+				0,1,0,0,
+				0,0,1,0,
+				1,-1,-9,1);
 }
 
 void key0(){
@@ -95,7 +102,7 @@ void reshape(int W, int H) {
 }
 
 void loadBufferData() {
-    std::vector<vec3> outPositions;
+	std::vector<vec3> outPositions;
     std::vector<int> outIndices;
     std::vector<vec3> outNormal;
     std::vector<vec2> outUv;

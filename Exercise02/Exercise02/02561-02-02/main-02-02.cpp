@@ -143,7 +143,7 @@ void display() {
     drawAxis();
 	
 	// to translate 3 units we have to translate before scaling. positive degrees in Rotate is counter clockwise
-	modelView = modelView*Translate(0.0f,3.0f,0.0f)*Scale(2.0f, 2.0f, 2.0f)*RotateY(30);
+	modelView = modelView*Translate(0.0f,3.0f,0.0f)*Scale(2.0f, 2.0f, 2.0f)*RotateY(30); // :-)
 
 
 	vec4 white(1.0, 1.0, 1.0, 1.0);
