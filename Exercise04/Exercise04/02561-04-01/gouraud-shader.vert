@@ -35,7 +35,7 @@ void main()
 
 	vec4 L = LightPosition - vPosition_eye;
 
-	vec4 half = -normalize(L + view_direction);
+	vec4 half = normalize(L + view_direction);
 	half.w = 0;
 	float s = dot(half, vNormal_eye);
 
