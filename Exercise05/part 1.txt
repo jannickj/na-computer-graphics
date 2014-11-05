@@ -1,0 +1,2 @@
+a)
+pick select which object to draw once you click outside the colored boxes.

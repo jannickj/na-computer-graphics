@@ -113,10 +113,10 @@ void display( void ) {
     glUniformMatrix4fv( ModelView, 1, GL_TRUE, model_view );
 
 	// Initialize shader lighting parameters
-    vec4 light_position( 0.0, 0.0, -1.0, 0.0 );
-    vec4 light_ambient( 0.2, 0.2, 0.2, 1.0 );
-    vec4 light_diffuse( 1.0, 1.0, 1.0, 1.0 );
-    vec4 light_specular( 1.0, 1.0, 1.0, 1.0 );
+	vec4 light_position[3] = {vec4( -1.0, 0.0, -1.0, 0.0 ), vec4( 0.0, -1.0, -1.0, 0.0 ), vec4( 0.0, 0.0, -1.0, 0.0 )};
+    vec4 light_ambient( 0.3, 0.3, 0.3, 1.0 );
+    vec4 light_diffuse( 0.3, 0.3, 0.3, 1.0 );
+    vec4 light_specular( 0.3, 0.3, 0.3, 1.0 );
 
     vec4 material_ambient( 1.0, 0.0, 1.0, 1.0 );
     vec4 material_diffuse( 1.0, 0.8, 0.0, 1.0 );
@@ -133,9 +133,9 @@ void display( void ) {
 		  1, diffuse_product );
     glUniform4fv( glGetUniformLocation(program, "SpecularProduct"),
 		  1, specular_product );
-	
+
     glUniform4fv( glGetUniformLocation(program, "LightPosition"),
-		  1, light_position );
+		  3, *light_position );
 
     glUniform1f( glGetUniformLocation(program, "Shininess"),
 		 material_shininess );

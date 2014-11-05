@@ -12,6 +12,9 @@ std::vector<int> meshIndices;
 
 int lastUpdate = 0;
 
+//directional light vs point light
+float lightType = 0.0;
+
 // Array of rotation angles (in degrees) for each coordinate axis
 int      Axis = 0;
 GLfloat  Theta[3] = { 0.0, 30.0, 30.0 };
@@ -113,7 +116,7 @@ void display( void ) {
     glUniformMatrix4fv( ModelView, 1, GL_TRUE, model_view );
 
 	// Initialize shader lighting parameters
-    vec4 light_position( 0.0, 0.0, -1.0, 0.0 );
+    vec4 light_position( 0.0, 0.0, -1.0, lightType );
     vec4 light_ambient( 0.2, 0.2, 0.2, 1.0 );
     vec4 light_diffuse( 1.0, 1.0, 1.0, 1.0 );
     vec4 light_specular( 1.0, 1.0, 1.0, 1.0 );
@@ -198,6 +201,13 @@ void keyboard( unsigned char key, int x, int y ) {
 	case 'r':
 		cout << "Reload shaders" << endl;
 		reloadShader();
+		break;
+	case 'w':
+	case 'W':
+		if (lightType == 0.0)
+			lightType = 1.0;
+		else
+			lightType = 0.0;
 		break;
     }
 }
