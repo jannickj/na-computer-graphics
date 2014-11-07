@@ -111,7 +111,9 @@ void display() {
 	mat4 modelView = LookAt(eye, at, up);
 	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 	
-	mat4 textureTrans;
+	mat4 textureTrans = mat4(-3);
+	//RotateZ(180) which is the same as RotateX(180) * RotateY(180) which is the same as mat4(-1), will rotate the texture
+	//Scale(input) (input between -1 and 1) zooms in on the texture, while input larger than 1 or smaller than -1 will zoom out and duplicate the texture, for example with mat4(3)
 	glUniformMatrix4fv(textureTransUniform, 1, GL_TRUE, textureTrans);
 	
 	// bind texture
