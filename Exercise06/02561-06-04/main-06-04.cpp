@@ -21,7 +21,7 @@ GLuint positionAttribute,
 GLuint polygonVertexArrayObject;
 GLuint textureId;
 
-const int polygonSize = 4;
+const int polygonSize = 5;
 
 struct Vertex {
     vec4 position;
@@ -33,11 +33,18 @@ void display();
 GLuint loadBufferData(Vertex* vertices, int vertexCount);
 
 void buildPolygon() {
+	//Vertex polygonData[polygonSize] = {
+		//{vec4(0., 1, 1, 1.0), vec2(1,1)},
+		//{vec4(0.,-1, 1, 1.0), vec2(0,1)}, 
+		//{vec4(0.,-1,-1, 1.0), vec2(0,0)},
+		//{vec4(0., 1,-1, 1.0), vec2(1,0)}
+	//};
 	Vertex polygonData[polygonSize] = {
-		{vec4(0., 1, 1, 1.0), vec2(1,1)},
-		{vec4(0.,-1, 1, 1.0), vec2(0,1)}, 
+		{vec4(0., 1, 1, 1.0), vec2(2,2)},
+		{vec4(0.,-1, 1, 1.0), vec2(0,2)}, 
 		{vec4(0.,-1,-1, 1.0), vec2(0,0)},
-		{vec4(0., 1,-1, 1.0), vec2(1,0)}
+		{vec4(0., 1,-1, 1.0), vec2(2,0)},
+		{vec4(0., 2, 0, 1.0), vec2(3,1)}
 	};
 	polygonVertexArrayObject = loadBufferData(polygonData, polygonSize);
 }
@@ -157,6 +164,26 @@ void keyboard(unsigned char c, int x, int y){
 	case '1':
 		glutSetWindowTitle("T: Repeat");
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		break;
+	case '2':
+		glutSetWindowTitle("T: Mirrored Repeat");
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+		break;
+	case '3':
+		glutSetWindowTitle("T: Clamp to Edge");
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		break;
+	case '4':
+		glutSetWindowTitle("S: Repeat");
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		break;
+	case '5':
+		glutSetWindowTitle("S: Mirrored Repeat");
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		break;
+	case '6':
+		glutSetWindowTitle("S: Clamp to Edge");
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		break;
 		// todo implement for rest of combinations (for both T and S)
 	}

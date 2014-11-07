@@ -1,0 +1,9 @@
+b)
+the small green object is rotate along the y axis which makes it face away from the eye, thus making face culling remove it
+
+
+
+c)
+it decides what the object's orientation is, by looking at the direction of a surface's normal vector
+
+

@@ -138,7 +138,7 @@ void drawPolygon() {
 
 void display() {	
     glClearColor(1.,1.,1.,1.);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
     glUseProgram(shaderProgram);
 
@@ -158,9 +158,12 @@ void display() {
 	glUniform4fv(colorUniform, 1, vec4(0., 1., 0., 1.0));
 	drawPolygon();
 	
+	//modelView = modelView * RotateZ(180) * Translate(0,-10,0);
+	//glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 	glUniform4fv(colorUniform, 1, vec4(0., 1., 1., 1.0));
 	drawSolidUnitCube();
 
+	//modelView = LookAt(eye, at, up);
 	modelView = modelView * Translate(0,20,0) * RotateY(180) * Scale(.2, .2, .2);
 	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 	glUniform4fv(colorUniform, 1, vec4(0., 1., 0., 1.0));
