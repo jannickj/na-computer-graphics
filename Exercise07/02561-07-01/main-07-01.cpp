@@ -117,6 +117,16 @@ void drawScene(mat4 view){
 	
 	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 	drawSolidUnitCube();
+
+
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView * Translate(0,-4,0));
+	drawSolidUnitCube();
+
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView * Translate(0,4,0));
+	drawSolidUnitCube();
+
+	glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView * Translate(0,0,4));
+	drawSolidUnitCube();
 }
 
 void drawLightSource(mat4 view){
@@ -131,41 +141,50 @@ void drawLightSource(mat4 view){
 }
 GLfloat shadowDistance = -4;
 mat4 createShadowProjectionPointLight(){
-	// todo implement method
 
-	mat4 ret = mat4();
+	mat4 m, mm;
 
-	ret[3][1] = -1.0/lightPos.y;
-	
+	m[3][3] = 0;
 
-	ret = LookAt(eyePoint,vec4(0,0,0,0), vec4(0,1,0,0))
-		* Translate(lightPos)
-		* ret
+	m[3][0] = -1.0/(lightPos.x - shadowDistance);
+
+	mm = Translate(lightPos)
+		* m
 		* Translate(-lightPos);
 
-	/*ret =  Translate(0,0,0)* 
-				mat4(0,0,0,0,
-				     0,1,0,0,
-					 0,0,1,0,
-					 0,0,0,1)* ret ;*/
-
-	
-
-	//ret = mat4(	1,			  0,			0,0,
-	//			0,			  1,			0,0,
-	//			1.0/tan(45.0),1.0/tan(45.0),0,0,
-	//			0,			  0,			0,1 );
-
-	//ret = ret * Translate(-4,0,0);
-
-		//* LookAt(vec4(-4.0, 0.0, 0.0, 0.0), lightPos, vec4(1,0,0,0));
-
-	return ret;
+	return mm;
 }
 
 mat4 createShadowProjectionDirectionalLight() {
 	// todo implement method
-	return mat4(0);
+
+	mat4 m = mat4(0), mm, h, p = mat4(0);
+	float Theta, phyrexia;
+
+	m[0][0] = 0;
+	m[1][1] = 1;
+	m[2][2] = 1;
+	m[3][3] = 1;
+	m[0][3] = shadowDistance;
+
+	m[1][0] = lightPos.y / (lightPos.x - shadowDistance);
+	m[2][0] = lightPos.z / (lightPos.x - shadowDistance);
+	
+	
+	/*vec2 
+
+	Theta = 
+	phyrexia = 0;
+
+	h[0][3] = 1.0/tan();
+	h[1][3] = 1.0/tan();*/
+
+	p = m;
+
+	// husk shadowDistance i Translate
+	mm = p;
+
+	return mm;
 }
 
 void display() {	
@@ -272,6 +291,12 @@ void keyboard(unsigned char key, int x, int y)
 			cout << "Orthogonale shadow projection" << endl;
 		}
 		glutPostRedisplay();
+		break;
+	case 'd':
+		if (shadowDistance == -4)
+			shadowDistance = -8;
+		else
+			shadowDistance = -4;
 		break;
 	}
 }
