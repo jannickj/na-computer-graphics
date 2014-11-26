@@ -31,7 +31,8 @@ struct Shader {
 	GLuint positionAttribute,
 		normalAttribute,
 		textureCoordinateAttribute;
-	GLuint lightViewProjectionUniform;
+	GLuint lightViewProjectionUniform, 
+		ShadowMapUniform;
 };
 
 struct MeshObject {
@@ -255,7 +256,9 @@ Shader loadShader(const char* vertShader, const char* fragShader) {
 	shader.colorUniform = glGetUniformLocation(shader.shaderProgram, "color");
 	shader.normalMatUniform = glGetUniformLocation(shader.shaderProgram, "normalMat");
 	shader.clipPlaneUniform = glGetUniformLocation(shader.shaderProgram, "clipPlane");
-	shader.lightViewProjectionUniform = glGetUniformLocation(shader.shaderProgram, "lightViewProjection");
+
+	shader.lightViewProjectionUniform = glGetUniformLocation(shader.shaderProgram, "lightViewProjection");	
+	shader.ShadowMapUniform = glGetUniformLocation(shader.shaderProgram, "ShadowMap");
 	
 	// get attribute locations
 	shader.positionAttribute = glGetAttribLocation(shader.shaderProgram, "position");
@@ -297,6 +300,11 @@ void drawMeshObject(mat4 & projection, mat4 & model,mat4 & view, MeshObject& mes
 	if (meshObject.shader.viewUniform !=  GL_INVALID_INDEX){
 		mat4 lvp = getLightViewProjection();
 		glUniformMatrix4fv(meshObject.shader.lightViewProjectionUniform, 1, GL_TRUE, lvp);
+	}
+	if (meshObject.shader.viewUniform !=  GL_INVALID_INDEX){
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, shadowmapTextureId);
+		glUniform1i(meshObject.shader.ShadowMapUniform, 1);
 	}
 	
 	glBindVertexArray(meshObject.vertexArrayObject);
