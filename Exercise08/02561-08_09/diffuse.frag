@@ -17,6 +17,11 @@ void main(void) {
 	float Kd = max(dot(l, n), 0.0);
     float ambience = 0.3;
 	vec3 diffuseColor = vec3(1,1,1)*(Kd+ambience);
-	
+
 	fragColor = vec4(diffuseColor,1.0) * color;
+
+	float clipCalc = vWorldPos.x*clipPlane.x + vWorldPos.y*clipPlane.y + vWorldPos.z*clipPlane.z + clipPlane.w;
+
+	if (clipCalc > 0.0)
+		discard;
 }

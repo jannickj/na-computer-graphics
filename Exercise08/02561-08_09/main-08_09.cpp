@@ -114,7 +114,6 @@ void updateProjShadowTexture() {
 	mat4 view = getLightView();
 	mat4 model = Translate(teapotPosition);
 	
-	// todo render black teapot
 	vec4 oldColor = teapotObject.color;
 	teapotObject.color = vec4(0,0,0,1);
 	drawMeshObject(projection, model, view, teapotObject);
@@ -313,14 +312,45 @@ void drawMeshObject(mat4 & projection, mat4 & model,mat4 & view, MeshObject& mes
 
 void drawMirror(mat4 &projection, mat4 &view) {
 	// todo implement 
+	mat4 model = Scale(1,-1,1)*Translate(teapotPosition);
+	vec4 buffer = teapotObject.color;
+
+
+	glEnable(GL_STENCIL_TEST);
+	glDisable(GL_DEPTH_TEST);
+	glColorMask(false, false, false, false);
+	glStencilFunc(GL_ALWAYS, 1, 1);	
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	drawMeshObject(projection,  mat4(), view, planeObject);
+	glEnable(GL_DEPTH_TEST);
+	
+	teapotObject.color = vec4(0.68,0.68,0.68,1.);
+		
+	glColorMask(true, true, true, true);
+	glStencilFunc(GL_EQUAL, 1, 1); 
+	
+	clipPlane = vec4(0,1,0,0);
+	lightPosition = -lightPosition;
+	drawMeshObject(projection, model, view, teapotObject);
+	lightPosition = -lightPosition;
+	clipPlane = vec4(0,0,0,0);
+
+	teapotObject.color = buffer;
+
+	glDisable(GL_STENCIL_TEST);
 }
 
 void drawPlane(mat4 projection, mat4 view) {
 	if (draw_mirror == 1) {
+
 		drawMirror(projection, view);	
 	}
+
 	mat4 model;
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
 	drawMeshObject(projection,  model, view, planeObject);
+	glDisable(GL_BLEND);
 }
 
 void display() {
