@@ -201,7 +201,7 @@ void initCubemapTexture() {
 
 	glGenTextures(1, &cubemapTexture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-	for (int i=0; i<6; ++i)
+	for (int i=0; i<6; i++)
 	{
 		unsigned int width, height;
 		void* data = loadBMPRaw(cube[i], width, height);
@@ -212,11 +212,16 @@ void initCubemapTexture() {
 			width, //width
 			height, //height
 			0, //border
-			GL_RGB, //format or GL_BGR for BMP
+			GL_BGR, //format or GL_BGR for BMP
 			GL_UNSIGNED_BYTE, //type
 			data); //pixel data
 		delete [] data;
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
+	
 }
 
 void initNormalmapTexture(){
