@@ -57,6 +57,7 @@ void renderScene(bool select){
 				vec4 color(i/3.0, j/3.0, board[index]/3.0,1.0);
 				glUniform4fv(colorUniform, 1, color);
 			}
+
 			mat4 modelView = Translate(0.5+i,0.5+j,0);
 			glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, NUMBER_OF_VERTICES);
@@ -134,7 +135,7 @@ void pickSquares(int button, int state, int x, int y) {
 
 	selectBuffer->release();
 	if (id >= 0){
-		board[id] = (board[id] + 1) % 3;
+		//board[id] = (board[id] + 1) % 3;
 		glutPostRedisplay();
 	}
 } 

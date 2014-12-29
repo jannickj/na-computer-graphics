@@ -50,6 +50,16 @@ struct Geometry {
 	}
 };
 
+Geometry capacitorGeometry,
+	resistorGeometry,
+	transistorGeometry,
+	lineGeometry,
+	menuRectGeometry,
+	moveGeometry,
+	rotateGeometry,
+	scaleGeometry,
+	circleGeometry;
+
 struct component_t
 {
 	component_t(component_type t, vec2 trans, float rot, vec2 scal, Geometry geo) 
@@ -61,9 +71,16 @@ struct component_t
 	vec2 scale;
 	Geometry geometry;
 
-	void render(GLuint modelViewUniform){
+	void render(GLuint modelViewUniform, bool renderAsCircle){
 		// todo implement
 		// update the modelView and render the component
+		
+		mat4 modelView = Translate(translate.x/2.0-WINDOW_WIDTH/4.0, -translate.y/2.0+WINDOW_HEIGHT/4.0,0)*Scale(scale.x, scale.y, 0)*RotateZ(rotationDegrees);
+		glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
+		if (renderAsCircle)
+			circleGeometry.draw();
+		else
+			geometry.draw();
 	}
 };
 
@@ -78,14 +95,6 @@ GLuint projectionUniform,
 	colorUniform;
 GLuint positionAttribute;
 
-Geometry capacitorGeometry,
-	resistorGeometry,
-	transistorGeometry,
-	lineGeometry,
-	menuRectGeometry,
-	moveGeometry,
-	rotateGeometry,
-	scaleGeometry;
 
 SelectBuffer *selectBuffer = NULL;
 
@@ -104,9 +113,45 @@ void drawMenu();
 GLuint loadBufferData(Vertex* vertices, int vertexCount);
 void reshape(int W, int H);
 
+Vertex testData[3] = {
+        { vec4(0,    1, 0.0, 1.0 ) },
+        { vec4(-1.0,  1, 0.0, 1.0 ) },
+		{ vec4(1,  1, 0.0, 1.0 ) }
+    };
+GLuint testVAO;
+
 void renderScene(bool select){
 		// todo draw components[i] to screen or select buffer
 		// if select mode, then use the variable 'i' as object-id. 
+	for(int i = 0; i < components.size(); i++)
+	{
+		if (select)
+		{
+			selectBuffer->setId(i);
+			components[i].render(modelViewUniform, true);
+		}
+		else
+		{
+			components[i].render(modelViewUniform, false);
+		}
+	}
+}
+
+void buildCircle() {
+	
+	const int size = 80;
+	Vertex circleData[size];
+
+	float r = 0.8f;
+	for (int i=0;i<40;i++){
+		float fraction = i/40.0f;
+		circleData[i*2].position = vec4(r*sin(fraction*2*M_PI),r*cos(fraction*2*M_PI),0,1);
+		fraction += 1/40.0f;
+		circleData[i*2+1].position = vec4(r*sin(fraction*2*M_PI),r*cos(fraction*2*M_PI),0,1);
+	}
+
+	int circleVAO = loadBufferData(circleData, size);
+	circleGeometry = Geometry(circleVAO, size, GL_TRIANGLE_FAN);
 }
 
 void buildCapacitor() {
@@ -147,6 +192,37 @@ void buildTransistor() {
 	// build transistor in local space between (-1,-1, 0) and (1, 1, 0)
 	// transistorGeometry = ;
 	// todo insert code here
+	
+	const int offset = 12;
+	const int size = 80+offset;
+	Vertex transData[size] = {
+        { vec4(0, 1, 0.0, 1.0 ) },
+        { vec4(0,.4, 0.0, 1.0 ) },
+		{ vec4(0,.4, 0.0, 1.0 ) },
+        { vec4(-.4,.2, 0.0, 1.0 ) },
+
+        { vec4(-.4,.4, 0.0, 1.0 ) },
+        { vec4(-.4,-.4, 0.0, 1.0 ) },
+
+		{ vec4(0, -1, 0.0, 1.0 ) },
+        { vec4(0,-.4, 0.0, 1.0 ) },
+		{ vec4(0,-.4, 0.0, 1.0 ) },
+        { vec4(-.4,-.2, 0.0, 1.0 ) },
+		
+		{ vec4(-1,0, 0.0, 1.0 ) },
+        { vec4(-.4,0, 0.0, 1.0 ) },
+	};
+
+	float r = 0.8f;
+	for (int i=0;i<40;i++){
+		float fraction = i/40.0f;
+		transData[offset+i*2].position = vec4(r*sin(fraction*2*M_PI),r*cos(fraction*2*M_PI),0,1);
+		fraction += 1/40.0f;
+		transData[offset+i*2+1].position = vec4(r*sin(fraction*2*M_PI),r*cos(fraction*2*M_PI),0,1);
+	}
+
+	int transVAO = loadBufferData(transData, size);
+	transistorGeometry = Geometry(transVAO, size, GL_LINES);
 }
 
 void buildLine() {
@@ -265,6 +341,7 @@ void loadGeometry(){
 	buildMoveGeometry();
 	buildRotateGeometry();
 	buildScaleGeometry();
+	buildCircle();
 }
 
 
@@ -304,14 +381,47 @@ void display() {
 }
 
 
-menu_item getSelectedMenuItem(int x, int y){
-
-	return menu_none;
+menu_item getSelectedMenuItem(int x, int y)
+{
+	int actualMenuSize = menuSize * 2;
+	int indexX = x/actualMenuSize;
+	int indexY = y/actualMenuSize;
+	int enumInt = indexX + indexY*4;
+	//cout << "x: "<< x << ", " << "y: " << y << " \n";
+	if (enumInt > 8)
+		return menu_none;
+	else
+		return (menu_item)enumInt;
 }
 
 void motion(int x, int y)
 {
+	//cout << " motion with id: " << selectedComponent << "\n";
     mouseOver = getSelectedMenuItem(x,y);
+	if (selectedComponent == -1)
+		return;
+	
+	component_t * comp = &components.at(selectedComponent);
+	
+	vec2 cur = vec2(x, y);
+	float curLength = length(comp->translate - cur);
+
+	vec2 v3 = cur - comp->translate;
+	float angle =  atan2(v3.y, v3.x) / DegreesToRadians;
+
+	switch(selectedItem)
+	{
+	case move_item:
+		comp->translate = cur;
+		break;
+	case scale_item:
+		comp->scale = vec2(curLength);
+		break;
+	case rotate_item:
+		comp->rotationDegrees = angle;
+		break;
+	}
+	
 	// todo: transform from windows coordinates to world coordinates
 	// if component is selected then perform a 
 	// translate, rotate or scale of the selected component
@@ -321,14 +431,14 @@ void motion(int x, int y)
 void drawMenu(){
 	for (int i = 0; i < 4; i++) {
 		float dx = (i + .5) * menuSize;
-		for (int y = 0, s = 0; y < 2 * menuSize;y += menuSize, s++) {
+		for (int y = 0, s = 0; y < 2 * menuSize; y += menuSize, s++) {
 			int index = i + s * 4;
 			mat4 modelView = Translate(-WINDOW_WIDTH/4.0+(i+.5)*menuSize, +WINDOW_HEIGHT/4.0-(0.5*menuSize)-y,0)*Scale(menuSize*.5,menuSize*.5,menuSize*.5);
 			glUniformMatrix4fv(modelViewUniform, 1, GL_TRUE, modelView);
 			for (int j = 0; j < 2; j++) {
 				vec4 color;
 				if (j == 0) {
-					if (index == mouseOver) {
+					if (index == mouseOver) {						
 						color = vec4(0.8, 0.8, 0.8, 1.0);
 					} else if (index == selectedItem) {
 						color = vec4(0.9, 0.9, 0.9, 1.0);
@@ -423,15 +533,52 @@ void insertComponent(int x, int y){
 	// Insert an instance of the selected component into the vector components.
 	// The position should be at the current world position
 	// Scale should be 40x40 and Rotation should be 0
+
+	std::vector<component_t>::iterator it;	
+	it = components.begin();
+	component_type ct;
+	Geometry geo;
+	switch (selectedItem )
+	{
+	case (insert_capacitor):
+		ct = capacitor;
+		geo = capacitorGeometry;
+		break;
+	case (insert_resistor):
+		ct = resistor;
+		geo = resistorGeometry;
+		break;
+	case (insert_transistor):
+		ct = transistor;
+		geo = transistorGeometry;
+		break;
+	case (insert_line):
+	default:
+		ct = line;
+		geo = lineGeometry;
+		break;
+	}
+	components.insert ( it , component_t(ct, vec2(x,y), 0,vec2(40,40), geo) );
 }
 
 int selectObject(int x, int y) {
+
 	// Render the scene to the select buffer and use the select buffer to 
 	// test for objects close to x,y (in radius of 5 pixels)
 	// Return object id.
 	// if no object is found then return -1
+	
+	selectBuffer->setColorUniform(colorUniform);
+	selectBuffer->bind();
+	renderScene(true);
+	int id = selectBuffer->getId(x,WINDOW_HEIGHT-y);
+	glutSwapBuffers();
+	selectBuffer->release();
+	if (id >= 0){
+		return id;
+	}
 
-  return -1;
+	return -1;
 }
 
 void mouse(int button, int state, int x, int y) {
@@ -447,6 +594,10 @@ void mouse(int button, int state, int x, int y) {
 			} else if (leftMouseReleased) {
 				selectedComponent = -1;
 			}
+		} else if (selectedItem == delete_item){
+			int select = selectObject(x, y);
+			if (select >= 0)
+				components.erase(components.begin()+select);
 		} else if (leftMouseReleased) {
 			insertComponent(x,y);
 		}
@@ -479,6 +630,7 @@ int main(int argc, char* argv[]) {
 		
 	loadShader();
 	loadGeometry();
+	testVAO = loadBufferData(testData, 3);
 
 	Angel::CheckError();
 
