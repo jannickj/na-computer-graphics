@@ -27,10 +27,12 @@ window.onload = function init()
         vec2(1, 1)
     ];
 
-    //********************************
-    //* TODO: create array of colors
-    //********************************
-
+    //Init colors
+    colorArray = [
+       vec3(1, 0, 0),
+       vec3(0, 1, 0),
+       vec3(0, 0, 1)
+    ];
 
     //Load, compile and link the shaders
     var program = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -47,15 +49,16 @@ window.onload = function init()
     gl.enableVertexAttribArray(attribPos);
 
 
+    //create and bind color buffer
+    var colorBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(colorArray), gl.STATIC_DRAW);
 
-    //**************************************
-    //* TODO: create and bind color buffer
-    //**************************************
 
-
-    //*******************************************************************
-    //* TODO: Associate vertex shader color attribute with color buffer
-    //*******************************************************************
+    //Associate vertex shader color attribute with color buffer
+    var attributeColor = gl.getAttribLocation(program, "attributeColor");
+    gl.vertexAttribPointer(attributeColor, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(attributeColor);
 
 
     //Draw stuff

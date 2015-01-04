@@ -55,20 +55,17 @@ function render()
 
 
 
-    //****************************************************
-    //* TODO: Create projection, view and model matrices
-    //****************************************************
-    var projection = mat4(1);
-    var view = translate(0, 0, 1);
-    var model = mat4(1);
+    //Create projection, view and model matrices
+    var projection = perspective(fovy, aspect, near, far);
+    var view = lookAt(vec3(0, 0, 3), vec3(0, 0, 0), vec3(0, 1, 0));
+    var model = rotate(theta, vec3(0, 1, 1));
     var modelView = mult(view, model);
 
-    //****************************************************
-    //* TODO: Upload the modelView and projection
-    //*       matrix to the GPU
-    //****************************************************
-
-
+    //Upload the modelView and projection matrix to the GPU
+    gl.uniformMatrix4fv(gl.getUniformLocation(shaderProgram, "ModelView"),
+        false, flatten(modelView));
+    gl.uniformMatrix4fv(gl.getUniformLocation(shaderProgram, "Projection"),
+        false, flatten(projection));
 
 
     //upload light position vector

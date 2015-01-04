@@ -9,12 +9,15 @@
     <script id="vertex-shader" type="x-shader/x-vertex">
     //TODO: Extend shader to handle per vertex colors and
     //use the interpolated vertex color in the fragment shader.
-
+    
     attribute vec4 inPosition;
+    attribute vec3 attributeColor;
+    varying vec3 vertColor;
 
     void main()
     {
         gl_Position = inPosition;
+        vertColor = attributeColor;
     }
     </script>
 
@@ -23,10 +26,11 @@
     //use the interpolated vertex color in the fragment shader.
 
     precision mediump float;
+    varying vec3 vertColor;
 
     void main()
     {
-        gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 );
+        gl_FragColor = vec4( vertColor, 1.0 );
     }
     </script>
 
