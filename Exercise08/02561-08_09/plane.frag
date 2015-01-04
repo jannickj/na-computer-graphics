@@ -36,7 +36,5 @@ void main(void) {
 		sColor.z = 1;
 	}
 
-
-
 	fragColor = texture(texture1, vTextureCoordinate) * sColor; //vec4(mappedToTex.xy,0.0,1.0);
 }
