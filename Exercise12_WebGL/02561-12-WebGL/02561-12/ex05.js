@@ -57,20 +57,15 @@ function render()
     var theta = Date.now() / 100;
 
 
-    //****************************************************
-    //* TODO: Create projection, view and model matrices 
-    //*       (same as in Ex04)
-    //****************************************************
-    var projection = mat4(1);
-    var view = translate(0, 0, 1);
-    var model = mat4(1);
+    //Create projection, view and model matrices 
+    var projection = perspective(fovy, aspect, near, far);
+    var view = lookAt(vec3(0, 0, 3), vec3(0, 0, 0), vec3(0, 1, 0));
+    var model = rotate(theta, vec3(0, 1, 1));
     var modelView = mult(view, model);
 
-    //****************************************************
-    //* TODO: Upload the modelView and projection
-    //*       matrix to the GPU (same as in Ex04)
-    //****************************************************
-
+    //Upload the modelView and projection matrix to the GPU
+    gl.uniformMatrix4fv(gl.getUniformLocation(shaderProgram, "ModelView"), false, flatten(modelView));
+    gl.uniformMatrix4fv(gl.getUniformLocation(shaderProgram, "Projection"), false, flatten(projection));
 
 
 
@@ -95,14 +90,9 @@ function render()
 
 function bindAttributes()
 {
-    //*************************************************
-    //* TODO: Extend the vertex declaration to include
-    //*       the attribute 'uv' (texture coordinates)
-    //*************************************************
-
 
     var sizeOfFloat = 4;
-    var vertexLength = (3 + 3) * sizeOfFloat;
+    var vertexLength = (3 + 3 + 2) * sizeOfFloat;
 
     var vertexLocation = gl.getAttribLocation(shaderProgram, "position");
     gl.enableVertexAttribArray(vertexLocation);
@@ -112,20 +102,18 @@ function bindAttributes()
     gl.enableVertexAttribArray(normalLocation);
     gl.vertexAttribPointer(normalLocation, 3, gl.FLOAT, false, vertexLength, 3 * sizeOfFloat);
 
+    //the attribute 'uv' (texture coordinates)
+    var textureCoordinates = gl.getAttribLocation(shaderProgram, "uv");
+    gl.enableVertexAttribArray(textureCoordinates);
+    gl.vertexAttribPointer(textureCoordinates, 2, gl.FLOAT, false, vertexLength, 6 * sizeOfFloat);
+
 }
 
 function createVertexBufferObject(data)
 {
-    //*************************************************
-    //* TODO: Extend the interleaved data loading to
-    //*       also load the texture coordinates from
-    //*       the mesh data (data.uv1).
-    //*************************************************
-
-
     // create interleaved data
     var vertexCount = data.vertex.length / 3;
-    var vertexSize = 3 + 3;
+    var vertexSize = 3 + 3 + 2;
     var vertices = new Float32Array(vertexCount * vertexSize);
 
     for (var i = 0; i < vertexCount; i++)
@@ -136,6 +124,8 @@ function createVertexBufferObject(data)
         vertices[i * vertexSize + 3] = data.normal[i * 3];
         vertices[i * vertexSize + 4] = data.normal[i * 3 + 1];
         vertices[i * vertexSize + 5] = data.normal[i * 3 + 2];
+        vertices[i * vertexSize + 6] = data.uv1[i * 2];
+        vertices[i * vertexSize + 7] = data.uv1[i * 2 + 1];
     }
 
     //create and bind vertex buffer and upload vertices data
