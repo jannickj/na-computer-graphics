@@ -216,7 +216,11 @@ First is point light, second is directional.
 
 \subsection{Part 3}
 \subsubsection{A}
-\textbf{!!!! INDSÆT FORKLARING HER !!!!}
+\begin{itemize}
+	\item Phong lightning uses Ambience, specular and diffuse inorder to give a virtual representation of light given off from a source.
+	\item Phong shading is changing the colors of individual fragments based on the angle and distance from a light source.
+\end{itemize}
+
 
 
 \subsubsection{B}
@@ -306,10 +310,17 @@ When doing screenshots, the cursor is not captured in the image so it is not sho
 \section{Exercise 6}
 \subsection{Part 1}
 \subsubsection{A}
-\textbf{!!!! INDSÆT JANNICK TEGNING !!!!}
+Hidden surface removal removes objects which behind other objects. The reason the blue object is visible at first (without HSR) is that it is drawn last, which is indicated by the numbers on the drawing.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/e06p1a}
+	\label{fig:e06p1a}
+\end{figure}
+
 
 \subsubsection{B}
-The small green object is rotated along the y-axis which makes it face away from the eye point. Face culling then removes it.
+The small green object is rotated along the y-axis which makes it face away from the eye point. Face culling then removes it by looking at the orientation.
 
 \subsubsection{C}
 OpenGL decides what the orientation is, by looking at the direction of a surface's normal vector.
@@ -411,7 +422,13 @@ The 4 boxes are visible in the above screenshots.
 
 \section{Exercise 9}
 \subsection{Part 1}
-\textbf{!!!! INDSÆT SVAR HER !!!!}
+In the picture below we have pasted the code the setup stencil function including our comments to explain what it does.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/e09p1}
+	\label{fig:e09p1}
+\end{figure}
 
 \subsection{Part 2}
 \begin{figure}[H]
