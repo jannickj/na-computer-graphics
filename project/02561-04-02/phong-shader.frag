@@ -6,7 +6,7 @@ in vec3 out_vEyeDirection;
 
 out vec4 fragColor;
 
-uniform vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
+uniform vec4 AmbientProduct, DiffuseProduct, SpecularProduct, OriginalColor;
 uniform float Shininess;
 
 void main() 
@@ -31,11 +31,10 @@ void main()
 
 
 
-	vec4 color = ambient + diffuse + specular;
+	vec4 color = (ambient + diffuse + specular) * OriginalColor;
 	//color = specular;
-	color.w = 1.0;
+	color.w = OriginalColor.w;
  
-
     fragColor = color;
 } 
 
