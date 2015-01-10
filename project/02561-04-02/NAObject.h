@@ -9,6 +9,7 @@ private:
 	mat4 model;
 	Model * model3d;
 	ShaderProgram * shader;
+	vec4 color;
 
 public:
 	NAObject(ShaderProgram * shader, Model * Model3d);
@@ -19,5 +20,6 @@ public:
 	void Transform(mat4 trans);
 	void SetModel(mat4 model);
 	void Draw();
+	void SetColor(vec4 color);
 };
 

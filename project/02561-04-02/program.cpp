@@ -40,6 +40,10 @@ ShaderProgram * loadShader()
 	attPtr = glGetUniformLocation( program, attStr.c_str() );
 	shader->loadAtt(attStr, attPtr);
 
+	attStr = "OriginalColor";
+	attPtr = glGetUniformLocation( program, attStr.c_str() );
+	shader->loadAtt(attStr, attPtr);
+
 	shader->Use();
 	return shader;
 }
@@ -126,7 +130,7 @@ void display( void ) {
 	
 
 	// Initialize shader lighting parameters
-    vec4 light_position( 0.0, 0.0, -1, 0.0 );
+    vec4 light_position( -10, -5, -12.0, 0.0 );
     vec4 light_ambient( 0.2, 0.2, 0.2, 1.0 );
     vec4 light_diffuse( 1.0, 1.0, 1.0, 1.0 );
     vec4 light_specular( 1.0, 1.0, 1.0, 1.0 );
@@ -159,6 +163,58 @@ void display( void ) {
 	glutPostRedisplay();
 }
 
+
+void createFloor(VoxelWorldBuilder * wbuilder, vec3 pos, int length, int width, vec4 color)
+{
+	for (int i = 0; i < length; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			vec3 fpos = pos;
+			fpos.x+=i;
+			fpos.y+=j;
+			wbuilder->AddVoxel(fpos, color);
+		}
+	}
+}
+
+
+
+void createTree(VoxelWorldBuilder * wbuilder, vec3 pos)
+{
+	vec4 leaves = vec4(0,0.5,0,1);
+	vec4 bark = vec4(0.5,0.25,0,1);
+
+	wbuilder->AddVoxel(pos+vec3(0,0,0), bark);
+
+	wbuilder->AddVoxel(pos+vec3(0,0,2), leaves);
+
+	wbuilder->AddVoxel(pos+vec3(0,1,1), leaves);
+	wbuilder->AddVoxel(pos+vec3(1,0,1), leaves);
+	wbuilder->AddVoxel(pos+vec3(-1,0,1), leaves);
+	wbuilder->AddVoxel(pos+vec3(0,-1,1), leaves);
+}
+
+
+void createWorld(VoxelWorldBuilder * wbuilder)
+{
+	vec4 grass = vec4(0,0.8,0,1);
+	vec4 dirt = vec4(1,0,0,1);
+	
+	createFloor(wbuilder, vec3(0,0,0), 5, 5, grass);
+	createFloor(wbuilder, vec3(6,0,0), 5, 5, grass);
+	createFloor(wbuilder, vec3(0,6,0), 5, 5, grass);
+	createFloor(wbuilder, vec3(6,6,0), 5, 5, grass);
+
+	createFloor(wbuilder, vec3(5,0,0), 1, 11, dirt);
+	createFloor(wbuilder, vec3(0,5,0), 11, 1, dirt);
+
+	createTree(wbuilder, vec3(5,5,1));
+	createTree(wbuilder, vec3(8,7,1));
+	createTree(wbuilder, vec3(2,9,1));
+	createTree(wbuilder, vec3(8,2,1));
+
+}
 
 int main(int argc, char* argv[]) 
 {
@@ -219,15 +275,14 @@ int main(int argc, char* argv[])
 	NAFactory * factory = new NAFactory(shader);
 
 	VoxelWorldBuilder * wbuilder = new VoxelWorldBuilder(factory, cube, drawer);
-
+	createWorld(wbuilder);
 	//wbuilder->AddVoxel(vec3(0,0,0));
-	wbuilder->AddVoxel(vec3(0,1,0));
-	wbuilder->AddVoxel(vec3(0,-1,0));
-	wbuilder->AddVoxel(vec3(1,0,0));
-	wbuilder->AddVoxel(vec3(-1,0,0));
+	
+
+	
 	
     glEnable( GL_DEPTH_TEST );
-    glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
+    glClearColor( 0.8, 1.0, 1.0, 1.0 ); 
 
 
 
