@@ -7,7 +7,6 @@
     <ClCompile Include="Angel\ObjLoader.cpp">
       <Filter>Angel</Filter>
     </ClCompile>
-    <ClCompile Include="main-04-02.cpp" />
     <ClCompile Include="ObjectDrawer.cpp" />
     <ClCompile Include="NAObject.cpp" />
     <ClCompile Include="Model.cpp" />

@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClCompile Include="Angel\InitShader.cpp" />
     <ClCompile Include="Angel\ObjLoader.cpp" />
-    <ClCompile Include="main-04-02.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="NAFactory.cpp" />
