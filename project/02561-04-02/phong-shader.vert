@@ -21,12 +21,11 @@ void main()
 	vec4 v4Normal_eye = ModelView * vec4(vNormal, 0.0);
 	out_vNormal = new vec3(v4Normal_eye.x, v4Normal_eye.y, v4Normal_eye.z);
 
-	vec4 modified_LightPosition = ModelView * LightPosition; //use?
 
 	if (LightPosition.w == 0.0) 
-		out_vLight = -new vec3(LightPosition.x, LightPosition.y, LightPosition.z);
+		out_vLight = -(ModelView * LightPosition).xyz;
 	else 
-		out_vLight = new vec3(LightPosition.x, LightPosition.y, LightPosition.z) - v3Position_eye;
+		out_vLight = (ModelView * LightPosition).xyz - v3Position_eye;
 
 	out_vEyeDirection = -v3Position_eye;
 

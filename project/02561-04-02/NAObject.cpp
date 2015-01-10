@@ -28,7 +28,7 @@ ShaderProgram * NAObject::getShader() const
 
 void NAObject::Transform(mat4 trans)
 {
-	this->model = this->model * trans;
+	this->model = trans * this->model ;
 }
 
 void NAObject::SetModel(mat4 newModel)

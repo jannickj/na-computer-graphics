@@ -16,10 +16,12 @@
     <ClCompile Include="main-04-02.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
+    <ClCompile Include="NAFactory.cpp" />
     <ClCompile Include="NAObject.cpp" />
     <ClCompile Include="ObjectDrawer.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="VoxelWorldBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Angel\Angel.h" />
@@ -29,9 +31,11 @@
     <ClInclude Include="Angel\vec.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
+    <ClInclude Include="NAFactory.h" />
     <ClInclude Include="NAObject.h" />
     <ClInclude Include="ObjectDrawer.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="VoxelWorldBuilder.h" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
