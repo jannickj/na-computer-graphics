@@ -1,5 +1,5 @@
 a)
-shading is used make 2D works look 3D, by applying a little darkness to some areas
+shading is used make 2D objectslook 3D, by applying a little darkness to some areas
 Lighting provides light on areas to simulate light hitting the surfaces
 
 

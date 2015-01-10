@@ -202,7 +202,7 @@ int main(int argc, char* argv[]) {
 
 	//glEnable(GL_DEPTH_TEST);
 	//glDepthFunc(GL_LEQUAL);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 
 	//face culling fjerner bagsiden af objekters surface ved at se på deres orientation
 	//hidden surface removal algorithm fjerner objekter som er bag ved andre objekter
