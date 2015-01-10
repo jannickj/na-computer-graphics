@@ -1,0 +1,5 @@
+when the user clicks on a square the uniform variable colorUniform is set and the framebufferobject i bound.
+
+renderscene(true) generates the color and stores, and we then retrieve it in getId decoded from a color.
+
+the value of the selected index on the board is update to one of the three possible colors, and we ask to have the display function run again, so that renderscene(false) can draw our changes

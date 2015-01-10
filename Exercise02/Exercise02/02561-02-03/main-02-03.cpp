@@ -136,8 +136,8 @@ void display() {
 	
 
 	vec3 eye(20,5,5);
-	//vec3 at(0.0f,5.0f,5.0f); //part 3a
-	vec3 at(0.0f,5.0f,-5.0f); //part 3b
+	vec3 at(0.0f,5.0f,5.0f); //part 3a
+	//vec3 at(0.0f,5.0f,-5.0f); //part 3b
 	vec3 up(0,1,0);
 	mat4 modelView = LookAt(eye, at, up);
 

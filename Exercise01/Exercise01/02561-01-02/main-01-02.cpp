@@ -77,9 +77,9 @@ void loadGeometry() {
         { vec2( 3.5,  5.0 ), colorTria }
     };*/
 	Vertex triangleData[triangleSize] = {
-        { vec2(2.0, 2.0 ), (1.0f, 0.0f, 0.0f) },
-        { vec2(5.0,  2.0 ), (0.0f, 1.0f, 0.0f) },
-        { vec2( 3.5,  5.0 ), (0.0f, 0.0f, 1.0f) }
+        { vec2(2.0, 2.0 ), vec3(1.0f, 0.0f, 0.0f) },
+        { vec2(5.0,  2.0 ), vec3(0.0f, 1.0f, 0.0f) },
+        { vec2( 3.5,  5.0 ), vec3(0.0f, 0.0f, 1.0f) }
     };
 	rectangleVertexArrayBuffer = loadBufferData(rectangleData, rectangleSize);
 	triangleVertexArrayBuffer = loadBufferData(triangleData, triangleSize);
