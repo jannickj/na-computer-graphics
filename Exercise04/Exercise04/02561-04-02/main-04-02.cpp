@@ -116,7 +116,7 @@ void display( void ) {
     glUniformMatrix4fv( ModelView, 1, GL_TRUE, model_view );
 
 	// Initialize shader lighting parameters
-    vec4 light_position( 0.0, 0.0, -1.0, lightType );
+    vec4 light_position( 3.0, 0.0, -1.0, lightType );
     vec4 light_ambient( 0.2, 0.2, 0.2, 1.0 );
     vec4 light_diffuse( 1.0, 1.0, 1.0, 1.0 );
     vec4 light_specular( 1.0, 1.0, 1.0, 1.0 );
