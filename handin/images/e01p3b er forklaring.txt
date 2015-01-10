@@ -1,0 +1,5 @@
+triangles laver blot en trekant per 3 punkter
+
+strip laver sammenhængende trkanter, hvor de to sidste punkt i den forrige trekant indgår som de to første i den nye trekant
+
+fan bruger det første punkt i hver trekant
