@@ -1,6 +1,9 @@
 #include "ModelLoader.h"
 #include "Angel\Angel.h"
 #include "Angel\ObjLoader.h"
+#include <cmath>
+
+using namespace std;
 
 ModelLoader::ModelLoader(void)
 {
@@ -47,7 +50,21 @@ Model * ModelLoader::Load(std::string modelfile, ShaderProgram * shaderProgram, 
     glEnableVertexAttribArray(0);
 	glBindVertexArray(0);
 
+	vec3 maxCords;
+	vec3 minCords;
+
+	for (auto it = outPositions.begin(); it != outPositions.end(); ++it) {
+		minCords.x = min(minCords.x, it->x);
+		minCords.y = min(minCords.y, it->y);
+		minCords.z = min(minCords.z, it->z);
+
+		maxCords.x = max(maxCords.x, it->x);
+		maxCords.y = max(maxCords.y, it->y);
+		maxCords.z = max(maxCords.z, it->z);
+
+	}
 
 
-	return new Model(vao, meshIndices, outNormal, outUv);
+
+	return new Model(vao, meshIndices, outNormal, outUv, maxCords, minCords);
 }

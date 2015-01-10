@@ -20,5 +20,7 @@ public:
 	void SetProject(mat4);
 	void TransformView(mat4 trans);
 
+	void AddObject(NAObject * nao);
+
 };
 

@@ -1,13 +1,13 @@
 #include "Model.h"
 
-
-Model::Model(GLuint vaoID, std::vector<int> meshindices, std::vector<vec3> normals, std::vector<vec2> uv)
+Model::Model(GLuint vaoID, std::vector<int> meshindices, std::vector<vec3> normals, std::vector<vec2> uv, vec3 outerMax, vec3 outerMin)
 {
 	this->meshindices = meshindices;
 	this->normals = normals;
 	this->textureCord = uv;
 	this->vaoID = vaoID;
-
+	this->outerMax = outerMax;
+	this->outerMin = outerMin;
 }
 
 void Model::Bind() const
@@ -38,6 +38,12 @@ std::vector<vec3> Model::getNormals() const
 std::vector<vec2> Model::getTextureCord() const
 {
 	return this->textureCord;
+}
+
+vec3 Model::getDimensions() const
+{
+	vec3 dim = this->outerMax - this->outerMin;
+	return dim;
 }
 
 Model::~Model(void)

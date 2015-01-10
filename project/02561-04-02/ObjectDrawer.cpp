@@ -23,7 +23,6 @@ void ObjectDrawer::draw(NAObject * nao)
 	GLuint projectPtr = shader->Get("Projection");
 	glUniformMatrix4fv( projectPtr, 1, GL_TRUE, this->projection );
 
-	cout << "drawing";
 
 	nao->Draw();
 }
@@ -49,10 +48,15 @@ void ObjectDrawer::SetView(mat4 view)
 
 void ObjectDrawer::TransformView(mat4 trans)
 {
-	this->view = trans;
+	this->view =  trans * this->view;
 }
 
 void ObjectDrawer::SetProject(mat4 project)
 {
 	this->projection = project;
+}
+
+void ObjectDrawer::AddObject(NAObject * nao)
+{
+	this->objects.push_back(nao);
 }
